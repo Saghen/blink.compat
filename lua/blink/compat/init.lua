@@ -17,9 +17,6 @@ local function make_params(name, opts, ctx)
   return params
 end
 
---- @class blink.cmp.Source
---- @field name string
---- @field config blink.cmp.SourceProviderConfig
 local nvim_cmp = {}
 
 function nvim_cmp.new(config)
