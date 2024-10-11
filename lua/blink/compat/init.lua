@@ -18,12 +18,14 @@ local function make_params(name, opts, ctx)
 end
 
 --- @class blink.cmp.Source
+--- @field name string
+--- @field config blink.cmp.SourceProviderConfig
 local nvim_cmp = {}
 
-function nvim_cmp.new(opts, name)
+function nvim_cmp.new(config)
   local self = setmetatable(nvim_cmp, { _index = nvim_cmp })
-  self.name = name
-  self.opts = opts
+  self.name = config.name
+  self.config = config
 
   return self
 end
@@ -49,7 +51,7 @@ function nvim_cmp:get_completions(ctx, callback)
     })
   end
 
-  local params = make_params(self.name, self.opts, ctx)
+  local params = make_params(self.name, self.config.opts, ctx)
   source:complete(params, transformed_callback)
 
   return function() end
