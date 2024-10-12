@@ -20,7 +20,7 @@ end
 local nvim_cmp = {}
 
 function nvim_cmp.new(config)
-  local self = setmetatable(nvim_cmp, { _index = nvim_cmp })
+  local self = setmetatable({}, { __index = nvim_cmp })
   self.name = config.name
   self.config = config
 
