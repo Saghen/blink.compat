@@ -31,12 +31,6 @@ end
 
 local nvim_cmp = {}
 
-function nvim_cmp:enabled()
-  local source = registry.get_source(self.config.name)
-  if source == nil or source.is_available == nil then return true end
-  return source:is_available()
-end
-
 function nvim_cmp.new(_, config)
   local self = setmetatable({}, { __index = nvim_cmp })
   self.config = config
@@ -44,11 +38,22 @@ function nvim_cmp.new(_, config)
   return self
 end
 
+function nvim_cmp:enabled()
+  local source = registry.get_source(self.config.name)
+  if source == nil then
+    return false
+  elseif source.is_available == nil then
+    return true
+  end
+  return source:is_available()
+end
+
 function nvim_cmp:get_completions(ctx, callback)
   local source = registry.get_source(self.config.name)
   if source == nil or source.complete == nil then return callback() end
 
   local function transformed_callback(candidates)
+    vim.notify(vim.inspect(candidates))
     if candidates == nil then
       callback()
       return
