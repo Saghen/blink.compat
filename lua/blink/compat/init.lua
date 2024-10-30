@@ -19,8 +19,9 @@ local function make_params(config, ctx)
     priority = 0,
     trigger_characters = {},
     keyword_pattern = nil,
-    keyword_length = nil,
-    max_item_count = config.max_items,
+    -- we don't have enabled_sources or items, so we can't call these if they're functions - just use nil instead
+    keyword_length = type(config.min_keyword_length) == 'number' and config.min_keyword_length or nil,
+    max_item_count = type(config.max_items) == 'number' and config.max_items or nil,
     group_index = nil,
     entry_filter = nil,
   }
