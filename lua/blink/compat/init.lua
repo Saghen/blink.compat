@@ -63,9 +63,15 @@ function nvim_cmp:get_completions(ctx, callback)
   end
 
   local params = make_params(self.config, ctx)
-  source:complete(params, transformed_callback)
+  local ok, _ = pcall(function() source:complete(params, transformed_callback) end)
+  if not ok then
+    vim.notify(
+      'blink.compat completion source "' .. self.config.name .. '" failed to provide completions',
+      vim.log.levels.WARN
+    )
+    callback()
+  end
 
-  return function() end
 end
 
 function nvim_cmp:get_trigger_characters()
