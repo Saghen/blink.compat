@@ -74,10 +74,4 @@ function nvim_cmp:get_trigger_characters()
   return source:get_trigger_characters()
 end
 
-function nvim_cmp:should_show_completions()
-  local source = registry.get_source(self.config.name)
-  if source == nil or source.is_available == nil then return true end
-  return source:is_available()
-end
-
 return nvim_cmp
