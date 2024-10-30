@@ -18,7 +18,7 @@ those instead!
 ## Usage
 
 For each `nvim-cmp` source you want to use, add a provider with
-`module = 'blink.compat'` and the same `name` that `nvim-cmp` uses.
+`module = 'blink.compat.source'` and the same `name` that `nvim-cmp` uses.
 
 Here's a minimal example adding the
 [lazydev.nvim](https://github.com/folke/lazydev.nvim) source provider in `lazy.nvim`
@@ -39,7 +39,7 @@ Here's a minimal example adding the
     providers = {
       lazydev = {
         name = 'lazydev', -- IMPORTANT: use the same name as you would for nvim-cmp
-        module = 'blink.compat',
+        module = 'blink.compat.source',
 
         -- all blink.cmp source config options work as normal:
         score_offset = 3,
