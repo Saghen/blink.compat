@@ -71,7 +71,17 @@ function nvim_cmp:get_completions(ctx, callback)
     )
     callback()
   end
+end
 
+function nvim_cmp:resolve(item, callback)
+  local source = registry.get_source(self.config.name)
+  if source == nil or source.resolve == nil then return callback(item) end
+
+  local ok, _ = pcall(function() source:resolve(item, callback) end)
+  if not ok then
+    vim.notify('blink.compat completion source "' .. self.config.name .. '" failed to resolve', vim.log.levels.WARN)
+    callback(item)
+  end
 end
 
 function nvim_cmp:get_trigger_characters()
