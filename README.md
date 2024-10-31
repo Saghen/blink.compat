@@ -28,7 +28,16 @@ Here's a minimal example adding the
   'saghen/blink.cmp',
   dependencies = {
     -- add blink.compat to dependencies
-    'saghen/blink.compat',
+    {
+      'saghen/blink.compat',
+      opts = {
+        -- lazydev.nvim only registers the completion source when nvim-cmp is
+        -- loaded, so pretend that we are nvim-cmp, and that nvim-cmp is loaded.
+        -- this option only has effect when using lazy.nvim
+        -- this should not be required in most cases
+        impersontate_nvim_cmp = true,
+      }
+    },
   },
   sources = {
     completion = {
