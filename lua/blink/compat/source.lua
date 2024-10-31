@@ -53,7 +53,6 @@ function source:get_completions(ctx, callback)
   if s == nil or s.complete == nil then return callback() end
 
   local function transformed_callback(candidates)
-    vim.notify(vim.inspect(candidates))
     if candidates == nil then
       callback()
       return
