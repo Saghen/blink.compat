@@ -21,44 +21,53 @@ For each `nvim-cmp` source you want to use, add a provider with
 `module = 'blink.compat.source'` and the same `name` that `nvim-cmp` uses.
 
 Here's a minimal example adding the
-[lazydev.nvim](https://github.com/folke/lazydev.nvim) source provider in `lazy.nvim`
+[cmp-digraphs](https://github.com/dmitmel/cmp-digraphs) source provider in `lazy.nvim`
 
 ```lua
 {
   'saghen/blink.cmp',
   dependencies = {
     -- add blink.compat to dependencies
-    {
-      'saghen/blink.compat',
-      opts = {
-        -- lazydev.nvim only registers the completion source when nvim-cmp is
-        -- loaded, so pretend that we are nvim-cmp, and that nvim-cmp is loaded.
-        -- this option only has effect when using lazy.nvim
-        -- this should not be required in most cases
-        impersonate_nvim_cmp = true,
-      }
-    },
+    { 'saghen/blink.compat' },
+    -- add source to dependencies
+    { "dmitmel/cmp-digraphs", lazy = true },
   },
   sources = {
     completion = {
       -- remember to enable your providers here
-      enabled_providers = {'lsp', 'path', 'snippets', 'buffer', 'lazydev'}
+      enabled_providers = {'lsp', 'path', 'snippets', 'buffer', 'digraphs'}
     },
 
     providers = {
-      lazydev = {
-        name = 'lazydev', -- IMPORTANT: use the same name as you would for nvim-cmp
+      digraphs = {
+        name = 'digraphs', -- IMPORTANT: use the same name as you would for nvim-cmp
         module = 'blink.compat.source',
 
         -- all blink.cmp source config options work as normal:
-        score_offset = 3,
+        score_offset = -3,
 
         opts = {
-          -- options for the completion source
+          -- options passed to the completion source
           -- equivalent to `option` field of nvim-cmp source config
+
+          cache_digraphs_on_start = true,
         }
       }
     }
   }
 },
+```
+
+## Options
+
+A complete list of all configuration options
+
+```lua
+opts = {
+  -- some plugins might only register their completion source when nvim-cmp is
+  -- loaded, so pretend that we are nvim-cmp, and that nvim-cmp is loaded.
+  -- only has effect when using lazy.nvim
+  -- this should rarely be needed
+  impersonate_nvim_cmp = true,
+}
 ```
