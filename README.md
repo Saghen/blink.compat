@@ -60,7 +60,7 @@ Here's a minimal example adding the
 
 ## Options
 
-A complete list of all configuration options
+A complete list of all configuration options and their defaults
 
 ```lua
 opts = {
@@ -68,6 +68,6 @@ opts = {
   -- loaded, so pretend that we are nvim-cmp, and that nvim-cmp is loaded.
   -- only has effect when using lazy.nvim
   -- this should rarely be needed
-  impersonate_nvim_cmp = true,
+  impersonate_nvim_cmp = false,
 }
 ```
