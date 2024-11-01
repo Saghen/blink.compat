@@ -35,7 +35,7 @@ Here's a minimal example adding the
         -- loaded, so pretend that we are nvim-cmp, and that nvim-cmp is loaded.
         -- this option only has effect when using lazy.nvim
         -- this should not be required in most cases
-        impersontate_nvim_cmp = true,
+        impersonate_nvim_cmp = true,
       }
     },
   },
