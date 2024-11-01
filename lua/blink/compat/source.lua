@@ -5,11 +5,13 @@ local context = require('blink.compat.context')
 
 --- @param config blink.cmp.SourceProviderConfig
 --- @param ctx blink.cmp.Context
-local function make_params(config, ctx)
+--- @param keyword_pattern? string
+local function make_params(config, ctx, keyword_pattern)
+  local cmp_ctx = context.new(ctx)
+
   local params = {
-    -- NOTE: `offset` does not consider keyword pattern as in `nvim-cmp` (because there is none)
-    offset = ctx.cursor[2] + 1,
-    context = context.new(ctx),
+    offset = keyword_pattern and cmp_ctx:get_offset(keyword_pattern) or cmp_ctx.cursor.col,
+    context = cmp_ctx,
     completion_context = {
       triggerCharacter = ctx.trigger.character,
       triggerKind = ctx.trigger.kind,
@@ -66,7 +68,7 @@ function source:get_completions(ctx, callback)
     })
   end
 
-  local params = make_params(self.config, ctx)
+  local params = make_params(self.config, ctx, self:get_keyword_pattern())
   local ok, _ = pcall(function() s:complete(params, transformed_callback) end)
   if not ok then
     vim.notify(
@@ -92,6 +94,12 @@ function source:get_trigger_characters()
   local s = registry.get_source(self.config.name)
   if s == nil or s.get_trigger_characters == nil then return {} end
   return s:get_trigger_characters()
+end
+
+function source:get_keyword_pattern()
+  local s = registry.get_source(self.config.name)
+  if s == nil or s.get_keyword_pattern == nil then return nil end
+  return s:get_keyword_pattern()
 end
 
 return source
