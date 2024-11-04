@@ -8,6 +8,9 @@ for k, v in pairs(require('cmp.types.cmp')) do
 end
 cmp.lsp = require('cmp.types.lsp')
 
+---Expose Event
+cmp.event = cmp.core.event
+
 function cmp.register_source(name, s)
   require('blink.compat.registry').register_source(name, s)
   -- use name as id

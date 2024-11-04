@@ -11,6 +11,11 @@ local config = {
 
   -- disable warning that plugin has not registered its source
   disable_registration_warning = false,
+
+  -- some sources, like codeium.nvim, rely on nvim-cmp events to function properly
+  -- when enabled, emit those events
+  -- NOTE: somewhat hacky, may harm performance or break
+  enable_events = false,
 }
 
 local M = {}

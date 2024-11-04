@@ -1,11 +1,7 @@
 local compat = {}
 
---- @param opts blink.compat.Config
-function compat.setup(opts)
-  local config = require('blink.compat.config')
-  config.merge_with(opts)
-
-  if config.impersonate_nvim_cmp and package.loaded.lazy then
+local function setup_impersonate()
+  if package.loaded.lazy then
     local LazyConfig = require('lazy.core.config')
 
     LazyConfig.plugins['nvim-cmp'] = LazyConfig.plugins['blink.compat']
@@ -22,6 +18,18 @@ function compat.setup(opts)
       end,
     })
   end
+end
+
+local function setup_events() end
+
+--- @param opts blink.compat.Config
+function compat.setup(opts)
+  local config = require('blink.compat.config')
+  config.merge_with(opts)
+
+  if config.impersonate_nvim_cmp then setup_impersonate() end
+
+  if config.enable_events then setup_events() end
 end
 
 return compat
