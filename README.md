@@ -24,13 +24,15 @@ Here's a minimal example adding the
 [cmp-digraphs](https://github.com/dmitmel/cmp-digraphs) source provider in `lazy.nvim`
 
 ```lua
+-- add blink.compat
+{ 'saghen/blink.compat' },
+
+-- add source
+{ "dmitmel/cmp-digraphs", lazy = true },
+
 {
   'saghen/blink.cmp',
   dependencies = {
-    -- add blink.compat to dependencies
-    { 'saghen/blink.compat' },
-    -- add source to dependencies
-    { "dmitmel/cmp-digraphs", lazy = true },
   },
   sources = {
     completion = {
@@ -39,6 +41,7 @@ Here's a minimal example adding the
     },
 
     providers = {
+      -- create provider
       digraphs = {
         name = 'digraphs', -- IMPORTANT: use the same name as you would for nvim-cmp
         module = 'blink.compat.source',
@@ -73,5 +76,10 @@ opts = {
 
   -- disable warning that plugin has not registered its source
   disable_registration_warning = false,
+
+  -- some sources, like codeium.nvim, rely on nvim-cmp events to function properly
+  -- when enabled, emit those events
+  -- NOTE: somewhat hacky, may harm performance or break
+  enable_events = false,
 }
 ```
