@@ -43,11 +43,7 @@ function context.new(ctx)
       row = ctx.cursor[1],
       col = ctx.cursor[2] + 1,
       line = ctx.cursor[1] - 1,
-      character = vim.str_utfindex(
-        ctx.line,
-        vim.api.nvim_get_option_value('fileencoding', { buf = ctx.bufnr }),
-        ctx.cursor[2]
-      ),
+      character = vim.str_utfindex(ctx.line, ctx.cursor[2]),
     },
     cursor_line = ctx.line,
     cursor_after_line = string.sub(ctx.line, ctx.cursor[2] + 1),
