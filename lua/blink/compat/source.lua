@@ -68,11 +68,24 @@ function source:get_completions(ctx, callback)
       return
     end
 
+    local items = candidates.items or candidates
+
+    if config.enable_events then
+      items = vim.tbl_map(function(item)
+        item._source = setmetatable({
+          name = self.config.name,
+          source = s,
+        }, { __index = s })
+
+        return item
+      end, items)
+    end
+
     callback({
       context = ctx,
       is_incomplete_forward = candidates.isIncomplete or false,
       is_incomplete_backward = true,
-      items = candidates.items or candidates,
+      items = items,
     })
   end
 
