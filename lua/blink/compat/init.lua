@@ -36,14 +36,15 @@ local function setup_events()
   end
   package.loaded['blink.cmp.accept'] = new_accept
 
-  local autocomplete = require('blink.cmp').windows.autocomplete
-
-  autocomplete.listen_on_open(function() event:emit('menu_opened', { window = {} }) end)
-  autocomplete.listen_on_close(function()
-    local item = autocomplete:get_selected_item()
-    if item then event:emit('confirm_done', make_entry(item)) end
-    event:emit('menu_closed', { window = {} })
-  end)
+  -- this has to run after blink.cmp setup, because windows is set then
+  -- local autocomplete = require('blink.cmp').windows.autocomplete
+  --
+  -- autocomplete.listen_on_open(function() event:emit('menu_opened', { window = {} }) end)
+  -- autocomplete.listen_on_close(function()
+  --   local item = autocomplete:get_selected_item()
+  --   if item then event:emit('complete_done', make_entry(item)) end
+  --   event:emit('menu_closed', { window = {} })
+  -- end)
 end
 
 --- @param opts blink.compat.Config
