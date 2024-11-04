@@ -93,14 +93,7 @@ function source:get_completions(ctx, callback)
     })
   end
 
-  local ok, _ = pcall(function() s:complete(params, transformed_callback) end)
-  if not ok then
-    vim.notify(
-      'blink.compat completion source "' .. self.config.name .. '" failed to provide completions',
-      vim.log.levels.WARN
-    )
-    callback()
-  end
+  s:complete(params, transformed_callback)
 end
 
 function source:resolve(item, callback)
