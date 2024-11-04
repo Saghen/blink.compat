@@ -1,6 +1,4 @@
-local event = {
-  events = {},
-}
+local event = {}
 
 function event:on(name, callback)
   if not self.events[name] then self.events[name] = {} end
@@ -25,4 +23,4 @@ function event:emit(name, ...)
   end
 end
 
-return setmetatable(event, { __index = event })
+return setmetatable({ events = {} }, { __index = event })
