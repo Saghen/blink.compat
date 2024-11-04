@@ -1,5 +1,5 @@
 local registry = require('blink.compat.registry')
-local context = require('blink.compat.context')
+local context = require('blink.compat.lib.context')
 
 --- @module 'blink.cmp'
 

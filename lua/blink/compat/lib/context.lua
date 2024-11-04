@@ -1,4 +1,4 @@
-local pattern = require('blink.compat.pattern')
+local pattern = require('blink.compat.lib.pattern')
 
 local context = {}
 
