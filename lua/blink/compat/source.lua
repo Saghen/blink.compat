@@ -1,34 +1,6 @@
 local registry = require('blink.compat.registry')
 local context = require('blink.compat.lib.context')
-
---- @module 'blink.cmp'
---- @param config blink.cmp.SourceProviderConfig
---- @param ctx blink.cmp.Context
---- @param keyword_pattern? string
-local function make_params(config, ctx, keyword_pattern)
-  local cmp_ctx = context.new(ctx)
-
-  local params = {
-    offset = keyword_pattern and cmp_ctx:get_offset(keyword_pattern) or cmp_ctx.cursor.col,
-    context = cmp_ctx,
-    completion_context = {
-      triggerCharacter = ctx.trigger.character,
-      triggerKind = ctx.trigger.kind,
-    },
-    name = config.name,
-    option = config.opts or {},
-    priority = 0,
-    trigger_characters = {},
-    keyword_pattern = nil,
-    -- we don't have enabled_sources or items, so we can't call these if they're functions - just use nil instead
-    keyword_length = type(config.min_keyword_length) == 'number' and config.min_keyword_length or nil,
-    max_item_count = type(config.max_items) == 'number' and config.max_items or nil,
-    group_index = nil,
-    entry_filter = nil,
-  }
-
-  return params
-end
+local pattern = require('blink.compat.lib.pattern')
 
 local source = {}
 
@@ -61,6 +33,39 @@ function source:get_completions(ctx, callback)
   local s = registry.get_source(self.config.name)
   if s == nil or s.complete == nil then return callback() end
 
+  local keyword_pattern
+  if s.get_keyword_pattern then keyword_pattern = s:get_keyword_pattern() end
+
+  local cmp_ctx = context.new(ctx)
+
+  local keyword_start, keyword_end
+  if keyword_pattern then
+    keyword_start, keyword_end = pattern.offset([[\%(]] .. keyword_pattern .. [[\)\m$]], cmp_ctx.cursor_before_line)
+
+    if not keyword_start then
+      -- Plugin provided a keyword_pattern, but keyword was not found
+      return callback()
+    end
+  end
+
+  local params = {
+    offset = keyword_start or cmp_ctx.cursor.col,
+    context = cmp_ctx,
+    completion_context = {
+      triggerCharacter = ctx.trigger.character,
+      triggerKind = ctx.trigger.kind,
+    },
+    name = self.config.name,
+    option = self.config.opts or {},
+    priority = 0,
+    trigger_characters = {},
+    keyword_pattern = nil,
+    -- we don't have enabled_sources or items, so we can't call these if they're functions - just use nil instead
+    keyword_length = type(self.config.min_keyword_length) == 'number' and self.config.min_keyword_length or nil,
+    max_item_count = type(self.config.max_items) == 'number' and self.config.max_items or nil,
+    group_index = nil,
+    entry_filter = nil,
+  }
   local function transformed_callback(candidates)
     if candidates == nil then
       callback()
@@ -88,7 +93,6 @@ function source:get_completions(ctx, callback)
     })
   end
 
-  local params = make_params(self.config, ctx, self:get_keyword_pattern())
   local ok, _ = pcall(function() s:complete(params, transformed_callback) end)
   if not ok then
     vim.notify(
@@ -114,12 +118,6 @@ function source:get_trigger_characters()
   local s = registry.get_source(self.config.name)
   if s == nil or s.get_trigger_characters == nil then return {} end
   return s:get_trigger_characters()
-end
-
-function source:get_keyword_pattern()
-  local s = registry.get_source(self.config.name)
-  if s == nil or s.get_keyword_pattern == nil then return nil end
-  return s:get_keyword_pattern()
 end
 
 return source

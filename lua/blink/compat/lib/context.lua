@@ -54,10 +54,4 @@ end
 
 function context:get_reason() return self.option.reason end
 
---- @param keyword_pattern string
---- @return integer
-function context:get_offset(keyword_pattern)
-  return pattern.offset([[\%(]] .. keyword_pattern .. [[\)\m$]], self.cursor_before_line) or self.cursor.col
-end
-
 return context
