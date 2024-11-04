@@ -70,5 +70,8 @@ opts = {
   -- most plugins don't do this, so this option should rarely be needed
   -- NOTE: only has effect when using lazy.nvim plugin manager
   impersonate_nvim_cmp = false,
+
+  -- disable warning that plugin has not registered its source
+  disable_registration_warning = false,
 }
 ```

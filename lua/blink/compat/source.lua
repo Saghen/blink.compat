@@ -1,8 +1,8 @@
+local config = require('blink.compat.config')
 local registry = require('blink.compat.registry')
 local context = require('blink.compat.lib.context')
 
 --- @module 'blink.cmp'
-
 --- @param config blink.cmp.SourceProviderConfig
 --- @param ctx blink.cmp.Context
 --- @param keyword_pattern? string
@@ -43,6 +43,14 @@ end
 function source:enabled()
   local s = registry.get_source(self.config.name)
   if s == nil then
+    if not config.disable_registration_warning then
+      vim.notify_once(
+        'blink.compat completion source "'
+          .. self.config.name
+          .. '" has not registered itself.\n Please try setting `impersonate_nvim_cmp = true` in blink.compat `opts`',
+        vim.log.levels.WARN
+      )
+    end
     return false
   elseif s.is_available == nil then
     return true
