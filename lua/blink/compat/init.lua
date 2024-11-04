@@ -24,6 +24,7 @@ local function setup_events()
   local event = require('blink.compat.event')
 
   local function make_entry(item)
+    -- NOTE: only events emmited by blink.compat sources will have a `source`
     return {
       entry = { completion_item = item, source = item._source or {} },
     }
