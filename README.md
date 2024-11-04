@@ -47,9 +47,10 @@ Here's a minimal example adding the
         score_offset = -3,
 
         opts = {
-          -- options passed to the completion source
-          -- equivalent to `option` field of nvim-cmp source config
+          -- this table is passed directly to the proxied completion source
+          -- as the `option` field in nvim-cmp's source config
 
+          -- this is an option from cmp-digraphs
           cache_digraphs_on_start = true,
         }
       }
@@ -64,10 +65,10 @@ A complete list of all configuration options and their defaults
 
 ```lua
 opts = {
-  -- some plugins might only register their completion source when nvim-cmp is
+  -- some plugins lazily register their completion source when nvim-cmp is
   -- loaded, so pretend that we are nvim-cmp, and that nvim-cmp is loaded.
-  -- only has effect when using lazy.nvim
-  -- this should rarely be needed
+  -- most plugins don't do this, so this option should rarely be needed
+  -- NOTE: only has effect when using lazy.nvim plugin manager
   impersonate_nvim_cmp = false,
 }
 ```
