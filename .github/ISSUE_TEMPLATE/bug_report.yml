@@ -1,0 +1,59 @@
+name: Bug Report
+description: File a bug report
+labels: ["bug"]
+body:
+  - type: checkboxes
+    id: checklist
+    attributes:
+      label: Make sure you have done the following
+      options:
+        - label: I have updated to the latest version of `blink.cmp` and `blink.compat`
+          required: true
+        - label: I have read the README
+          required: true
+  - type: textarea
+    id: bug-description
+    attributes:
+      label: Bug Description
+    validations: { required: true }
+  - type: textarea
+    id: user-config
+    attributes:
+      label: Relevant configuration
+      description: Copypaste the part of the config relevant to the bug. Do not paste the entire default config.
+      render: lua
+      placeholder: |
+        sources = {
+            completion = {
+              enabled_providers = {'lsp', 'path', 'snippets', 'buffer', 'digraphs'}
+            },
+            providers = {
+              digraphs = {
+                name = 'digraphs',
+                module = 'blink.compat.source',
+                opts = {
+                  cache_digraphs_on_start = true,
+                }
+              }
+            }
+          }
+        }
+    validations: { required: false }
+  - type: input
+    id: version-info
+    attributes:
+      label: neovim version
+      placeholder: "output of `nvim --version`"
+    validations: { required: true }
+  - type: input
+    id: branch-or-tag
+    attributes:
+      label: "`blink.cmp` version: branch, tag, or commit"
+      placeholder: "for example: main or v0.4.0"
+    validations: { required: true }
+  - type: input
+    id: branch-or-tag
+    attributes:
+      label: "`blink.compat` version: branch, tag, or commit"
+      placeholder: "for example: main or v0.4.0"
+    validations: { required: true }
