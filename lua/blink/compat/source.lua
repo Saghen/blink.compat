@@ -1,4 +1,3 @@
-local config = require('blink.compat.config')
 local registry = require('blink.compat.registry')
 local context = require('blink.compat.lib.context')
 
@@ -43,7 +42,7 @@ end
 function source:enabled()
   local s = registry.get_source(self.config.name)
   if s == nil then
-    if not config.disable_registration_warning then
+    if not require('blink.compat.config').disable_registration_warning then
       vim.notify_once(
         'blink.compat completion source "'
           .. self.config.name
@@ -70,7 +69,7 @@ function source:get_completions(ctx, callback)
 
     local items = candidates.items or candidates
 
-    if config.enable_events then
+    if require('blink.compat.config').enable_events then
       items = vim.tbl_map(function(item)
         item._source = setmetatable({
           name = self.config.name,
