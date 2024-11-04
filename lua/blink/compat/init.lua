@@ -21,16 +21,29 @@ local function setup_impersonate()
 end
 
 local function setup_events()
-  -- TODO: implement complete_done, menu_open, menu_closed
+  local event = require('blink.compat.event')
+
+  local function make_entry(item)
+    return {
+      entry = { completion_item = item, source = item._source or {} },
+    }
+  end
 
   local original_accept = require('blink.cmp.accept')
   local function new_accept(item)
     original_accept(item)
-    if item._source then
-      require('blink.compat.event'):emit('confirm_done', { entry = { completion_item = item, source = item._source } })
-    end
+    event:emit('confirm_done', make_entry(item))
   end
   package.loaded['blink.cmp.accept'] = new_accept
+
+  local autocomplete = require('blink.cmp.windows')
+
+  autocomplete.listen_on_open(function() event:emit('menu_opened', { window = {} }) end)
+  autocomplete.listen_on_close(function()
+    local item = autocomplete:get_selected_item()
+    if item then event:emit('confirm_done', make_entry(item)) end
+    event:emit('menu_closed', { window = {} })
+  end)
 end
 
 --- @param opts blink.compat.Config
