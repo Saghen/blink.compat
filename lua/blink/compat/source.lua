@@ -17,7 +17,7 @@ local function make_params(config, ctx, keyword_pattern)
       triggerKind = ctx.trigger.kind,
     },
     name = config.name,
-    option = config.opts,
+    option = config.opts or {},
     priority = 0,
     trigger_characters = {},
     keyword_pattern = nil,
