@@ -36,7 +36,7 @@ local function setup_events()
   end
   package.loaded['blink.cmp.accept'] = new_accept
 
-  local autocomplete = require('blink.cmp.windows')
+  local autocomplete = require('blink.cmp.windows.autocomplete')
 
   autocomplete.listen_on_open(function() event:emit('menu_opened', { window = {} }) end)
   autocomplete.listen_on_close(function()
