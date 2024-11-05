@@ -61,6 +61,7 @@ function source:get_completions(ctx, callback)
     group_index = nil,
     entry_filter = nil,
   }
+
   local function transformed_callback(candidates)
     if candidates == nil then
       callback()
@@ -75,6 +76,26 @@ function source:get_completions(ctx, callback)
           name = self.config.name,
           source = s,
         }, { __index = s })
+
+        return item
+      end, items)
+    end
+
+    if keyword_start then
+      local range = {
+        start = { line = cmp_ctx.cursor.line, character = keyword_start - 1 },
+        ['end'] = { line = cmp_ctx.cursor.line, character = keyword_end },
+      }
+
+      items = vim.tbl_map(function(item)
+        if item.textEdit or item.textEditText then return item end
+        local word = item.insertText or item.label
+
+        item.insertText = nil
+        item.textEdit = {
+          range = range,
+          newText = word,
+        }
 
         return item
       end, items)
