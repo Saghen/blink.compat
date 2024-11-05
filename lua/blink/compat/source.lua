@@ -1,6 +1,7 @@
 local registry = require('blink.compat.registry')
 local context = require('blink.compat.lib.context')
 local pattern = require('blink.compat.lib.pattern')
+local utils = require('blink.compat.lib.utils')
 
 local source = {}
 
@@ -89,6 +90,10 @@ function source:get_completions(ctx, callback)
 
       items = vim.tbl_map(function(item)
         if item.textEdit or item.textEditText then return item end
+
+        -- some sources reuse items, so copy to avoid setting textEdit on them
+        item = utils.shallow_copy(item)
+
         local word = item.insertText or item.label
 
         item.insertText = nil
