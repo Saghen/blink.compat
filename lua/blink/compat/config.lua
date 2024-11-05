@@ -1,5 +1,7 @@
 --- @class blink.compat.Config
 --- @field impersonate_nvim_cmp? boolean
+--- @field enable_events? boolean
+--- @field debug? boolean
 
 --- @type blink.compat.Config
 local config = {
