@@ -41,11 +41,6 @@ function source:get_completions(ctx, callback)
   local keyword_start, keyword_end
   if keyword_pattern then
     keyword_start, keyword_end = pattern.offset([[\%(]] .. keyword_pattern .. [[\)\m$]], cmp_ctx.cursor_before_line)
-
-    if not keyword_start then
-      -- Plugin provided a keyword_pattern, but keyword was not found
-      return callback()
-    end
   end
 
   local params = {
