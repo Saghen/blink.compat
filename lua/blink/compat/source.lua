@@ -15,7 +15,7 @@ end
 function source:enabled()
   local s = registry.get_source(self.config.name)
   if s == nil then
-    if not require('blink.compat.config').disable_registration_warning then
+    if require('blink.compat.config').debug then
       vim.notify_once(
         'blink.compat completion source "'
           .. self.config.name
