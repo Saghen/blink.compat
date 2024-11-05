@@ -85,7 +85,7 @@ function source:get_completions(ctx, callback)
     if keyword_start then
       local range = {
         start = { line = cmp_ctx.cursor.line, character = keyword_start - 1 },
-        ['end'] = { line = cmp_ctx.cursor.line, character = keyword_end },
+        ['end'] = { line = cmp_ctx.cursor.line, character = keyword_end - 1 },
       }
 
       items = vim.tbl_map(function(item)
