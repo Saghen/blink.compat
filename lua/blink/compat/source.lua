@@ -127,11 +127,7 @@ function source:resolve(item, callback)
   local s = self:_get_source()
   if s == nil or s.resolve == nil then return callback(item) end
 
-  local ok, _ = pcall(function() s:resolve(item, callback) end)
-  if not ok then
-    vim.notify('blink.compat completion source "' .. self.config.name .. '" failed to resolve', vim.log.levels.WARN)
-    callback(item)
-  end
+  s:resolve(item, callback)
 end
 
 function source:get_trigger_characters()
