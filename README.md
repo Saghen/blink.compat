@@ -27,12 +27,11 @@ Here's a minimal example adding the
 -- add blink.compat
 { 'saghen/blink.compat' },
 
--- add source
-{ "dmitmel/cmp-digraphs", lazy = true },
-
 {
   'saghen/blink.cmp',
   dependencies = {
+    -- add source
+    { "dmitmel/cmp-digraphs" },
   },
   sources = {
     completion = {
