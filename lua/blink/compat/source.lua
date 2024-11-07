@@ -12,17 +12,23 @@ function source.new(_, config)
   return self
 end
 
+function source:_get_source()
+  if self._source ~= nil then return self._source end
+  self._source = registry.get_source(self.config.name)
+  if self._source == nil and require('blink.compat.config').debug then
+    vim.notify_once(
+      'blink.compat completion source "'
+        .. self.config.name
+        .. '" has not registered itself.\n Please try enabling `impersonate_nvim_cmp` in blink.compat `opts`',
+      vim.log.levels.WARN
+    )
+  end
+  return self._source
+end
+
 function source:enabled()
-  local s = registry.get_source(self.config.name)
+  local s = self:_get_source()
   if s == nil then
-    if require('blink.compat.config').debug then
-      vim.notify_once(
-        'blink.compat completion source "'
-          .. self.config.name
-          .. '" has not registered itself.\n Please try setting `impersonate_nvim_cmp = true` in blink.compat `opts`',
-        vim.log.levels.WARN
-      )
-    end
     return false
   elseif s.is_available == nil then
     return true
@@ -31,7 +37,7 @@ function source:enabled()
 end
 
 function source:get_completions(ctx, callback)
-  local s = registry.get_source(self.config.name)
+  local s = self:_get_source()
   if s == nil or s.complete == nil then return callback() end
 
   local keyword_pattern
@@ -118,7 +124,7 @@ function source:get_completions(ctx, callback)
 end
 
 function source:resolve(item, callback)
-  local s = registry.get_source(self.config.name)
+  local s = self:_get_source()
   if s == nil or s.resolve == nil then return callback(item) end
 
   local ok, _ = pcall(function() s:resolve(item, callback) end)
@@ -129,7 +135,7 @@ function source:resolve(item, callback)
 end
 
 function source:get_trigger_characters()
-  local s = registry.get_source(self.config.name)
+  local s = self:_get_source()
   if s == nil or s.get_trigger_characters == nil then return {} end
   return s:get_trigger_characters()
 end
