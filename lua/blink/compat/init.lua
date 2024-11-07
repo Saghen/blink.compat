@@ -26,7 +26,12 @@ local function setup_events()
   local function make_entry(item)
     -- NOTE: only events emmited by blink.compat sources will have a `source`
     return {
-      entry = { completion_item = item, source = item._source or {} },
+      entry = {
+        completion_item = item,
+        source = item._source or {},
+        get_commit_characters = function() return {} end,
+        get_completion_item = function() return item end,
+      },
     }
   end
 
