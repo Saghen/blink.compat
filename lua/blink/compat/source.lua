@@ -130,6 +130,18 @@ function source:resolve(item, callback)
   s:resolve(item, callback)
 end
 
+function source:can_execute()
+  local s = self:_get_source()
+  return s ~= nil and s.execute ~= nil
+end
+
+function source:execute(_, item)
+  local s = self:_get_source()
+  if s == nil or s.execute == nil then return end
+
+  s:execute(item, function() end)
+end
+
 function source:get_trigger_characters()
   local s = self:_get_source()
   if s == nil or s.get_trigger_characters == nil then return {} end
