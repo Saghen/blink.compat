@@ -36,8 +36,8 @@ local function setup_events()
   end
 
   local original_accept = require('blink.cmp.accept')
-  local function new_accept(item)
-    original_accept(item)
+  local function new_accept(ctx, item)
+    original_accept(ctx, item)
     event:emit('confirm_done', make_entry(item))
   end
   package.loaded['blink.cmp.accept'] = new_accept
