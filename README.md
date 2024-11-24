@@ -25,6 +25,7 @@ Here's a minimal example adding the
 
 ```lua
 -- add blink.compat
+-- use the latest release, via version = '*', if you also use the latest release for blink.cmp
 { 'saghen/blink.compat', version = '*' },
 
 {
