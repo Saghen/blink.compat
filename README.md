@@ -25,10 +25,11 @@ Here's a minimal example adding the
 
 ```lua
 -- add blink.compat
-{ 'saghen/blink.compat' },
+{ 'saghen/blink.compat', version = '*' },
 
 {
   'saghen/blink.cmp',
+  version = '0.*',
   dependencies = {
     -- add source
     { "dmitmel/cmp-digraphs" },
