@@ -130,7 +130,7 @@ function source:resolve(item, callback)
   s:resolve(item, callback)
 end
 
-function source:can_execute()
+function source:should_execute()
   local s = self:_get_source()
   return s ~= nil and s.execute ~= nil
 end
