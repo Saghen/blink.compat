@@ -77,15 +77,8 @@ function source:get_completions(ctx, callback)
 
     local items = candidates.items or candidates
 
-    if require('blink.compat.config').enable_events then
-      items = vim.tbl_map(function(item)
-        item._source = setmetatable({
-          name = self.config.name,
-          source = s,
-        }, { __index = s })
-
-        return item
-      end, items)
+    for i = 1, #items do
+      items[i]._source = self.config.name
     end
 
     if keyword_start then

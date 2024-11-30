@@ -7,50 +7,56 @@ local function setup_impersonate()
     LazyConfig.plugins['nvim-cmp'] = LazyConfig.plugins['blink.compat']
 
     vim.api.nvim_create_autocmd('User', {
-      group = vim.api.nvim_create_augroup('blink-compat', { clear = true }),
+      group = compat.augroup,
       pattern = 'LazyDone',
       once = true,
-      callback = function()
+      callback = vim.schedule_wrap(function()
         package.loaded['nvim-cmp'] = package.loaded['blink.compat']
-        vim.schedule(
-          function() vim.api.nvim_exec_autocmds('User', { pattern = 'LazyLoad', modeline = false, data = 'nvim-cmp' }) end
-        )
-      end,
+        vim.api.nvim_exec_autocmds('User', { pattern = 'LazyLoad', modeline = false, data = 'nvim-cmp' })
+      end),
     })
   end
 end
 
 local function setup_events()
-  local event = require('blink.compat.event')
+  local compat_event = require('blink.compat.event')
+  local registry = require('blink.compat.registry')
 
   local function make_entry(item)
     -- NOTE: only events emmited by blink.compat sources will have a `source`
+
     return {
       entry = {
         completion_item = item,
-        source = item._source or {},
+        source = item and item._source and registry.get_source(item._source) or {},
         get_commit_characters = function() return {} end,
         get_completion_item = function() return item end,
       },
     }
   end
 
-  local original_accept = require('blink.cmp.accept')
-  local function new_accept(ctx, item)
-    original_accept(ctx, item)
-    event:emit('confirm_done', make_entry(item))
-  end
-  package.loaded['blink.cmp.accept'] = new_accept
+  vim.api.nvim_create_autocmd('User', {
+    group = compat.augroup,
+    pattern = 'BlinkCmpAccept',
+    callback = function(ev) compat_event:emit('confirm_done', make_entry(ev.data.item)) end,
+  })
 
-  -- this has to run after blink.cmp setup, because windows is set then
-  -- local autocomplete = require('blink.cmp').windows.autocomplete
-  --
-  -- autocomplete.listen_on_open(function() event:emit('menu_opened', { window = {} }) end)
-  -- autocomplete.listen_on_close(function()
-  --   local item = autocomplete:get_selected_item()
-  --   if item then event:emit('complete_done', make_entry(item)) end
-  --   event:emit('menu_closed', { window = {} })
-  -- end)
+  vim.api.nvim_create_autocmd('User', {
+    group = compat.augroup,
+    pattern = 'BlinkCmpShow',
+    callback = function() compat_event:emit('menu_opened', { window = {} }) end,
+  })
+
+  vim.api.nvim_create_autocmd('User', {
+    group = compat.augroup,
+    pattern = 'BlinkCmpHide',
+    callback = function()
+      local list = require('blink.cmp.completion.list')
+      local selected_item = list.selected_item_idx and list.get_selected_item()
+      compat_event:emit('complete_done', make_entry(selected_item))
+      compat_event:emit('menu_closed', { window = {} })
+    end,
+  })
 end
 
 --- @param opts blink.compat.Config
@@ -58,9 +64,11 @@ function compat.setup(opts)
   local config = require('blink.compat.config')
   config.merge_with(opts)
 
+  compat.augroup = vim.api.nvim_create_augroup('blink.compat', { clear = true })
+
   if config.impersonate_nvim_cmp then setup_impersonate() end
 
-  if config.enable_events then setup_events() end
+  setup_events()
 end
 
 return compat

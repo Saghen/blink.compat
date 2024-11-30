@@ -1,6 +1,5 @@
 --- @class blink.compat.Config
 --- @field impersonate_nvim_cmp? boolean
---- @field enable_events? boolean
 --- @field debug? boolean
 
 --- @type blink.compat.Config
@@ -10,11 +9,6 @@ local config = {
   -- most plugins don't do this, so this option should rarely be needed
   -- NOTE: only has effect when using lazy.nvim plugin manager
   impersonate_nvim_cmp = false,
-
-  -- some sources, like codeium.nvim, rely on nvim-cmp events to function properly
-  -- when enabled, emit those events
-  -- NOTE: somewhat hacky, may harm performance or break
-  enable_events = false,
 
   -- print some debug information. Might be useful for troubleshooting
   debug = false,
