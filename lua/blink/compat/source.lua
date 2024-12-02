@@ -123,11 +123,11 @@ function source:resolve(item, callback)
   s:resolve(item, callback)
 end
 
-function source:execute(_, item)
+function source:execute(_, item, callback)
   local s = self:_get_source()
-  if s == nil or s.execute == nil then return end
+  if s == nil or s.execute == nil then return callback() end
 
-  s:execute(item, function() end)
+  s:execute(item, callback)
 end
 
 function source:get_trigger_characters()
