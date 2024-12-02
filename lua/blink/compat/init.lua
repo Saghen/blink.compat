@@ -28,7 +28,7 @@ local function setup_events()
     return {
       entry = {
         completion_item = item,
-        source = item and item._source and registry.get_source(item._source) or {},
+        source = item and item.source_name and registry.get_source(item.source_name) or {},
         get_commit_characters = function() return {} end,
         get_completion_item = function() return item end,
       },

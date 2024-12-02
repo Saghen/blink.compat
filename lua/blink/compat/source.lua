@@ -77,10 +77,6 @@ function source:get_completions(ctx, callback)
 
     local items = candidates.items or candidates
 
-    for i = 1, #items do
-      items[i]._source = self.config.name
-    end
-
     if keyword_start then
       local range = {
         start = { line = cmp_ctx.cursor.line, character = keyword_start - 1 },
