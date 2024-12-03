@@ -28,7 +28,7 @@ end
 --- @param ctx blink.cmp.Context
 function context.new(ctx)
   return setmetatable({
-    id = tostring(ctx.id),
+    id = ctx.id,
     -- NOTE: prev_context is just an empty context. AFAIK this is fine because nothing actually uses it.
     prev_context = context.empty(),
     option = {
