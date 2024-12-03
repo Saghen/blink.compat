@@ -26,43 +26,53 @@ Here's a minimal example adding the
 [cmp-digraphs](https://github.com/dmitmel/cmp-digraphs) source provider in `lazy.nvim`
 
 ```lua
--- add blink.compat
--- use the latest release, via version = '*', if you also use the latest release for blink.cmp
-{ 'saghen/blink.compat', version = '*' },
-
-{
-  'saghen/blink.cmp',
-  version = '0.*',
-  dependencies = {
-    -- add source
-    { "dmitmel/cmp-digraphs" },
+return {
+  -- add blink.compat
+  {
+    'saghen/blink.compat',
+    -- use the latest release, via version = '*', if you also use the latest release for blink.cmp
+    version = '*',
+    -- lazy.nvim will automatically load the plugin when it's required by blink.cmp
+    lazy = true,
+    -- make sure to set opts so that lazy.nvim calls blink.compat's setup
+    opts = {},
   },
-  sources = {
-    completion = {
-      -- remember to enable your providers here
-      enabled_providers = {'lsp', 'path', 'snippets', 'buffer', 'digraphs'}
+
+  {
+    'saghen/blink.cmp',
+    version = '0.*',
+    dependencies = {
+      -- add source
+      { 'dmitmel/cmp-digraphs' },
     },
+    sources = {
+      completion = {
+        -- remember to enable your providers here
+        enabled_providers = { 'lsp', 'path', 'snippets', 'buffer', 'digraphs' },
+      },
 
-    providers = {
-      -- create provider
-      digraphs = {
-        name = 'digraphs', -- IMPORTANT: use the same name as you would for nvim-cmp
-        module = 'blink.compat.source',
+      providers = {
+        -- create provider
+        digraphs = {
+          name = 'digraphs', -- IMPORTANT: use the same name as you would for nvim-cmp
+          module = 'blink.compat.source',
 
-        -- all blink.cmp source config options work as normal:
-        score_offset = -3,
+          -- all blink.cmp source config options work as normal:
+          score_offset = -3,
 
-        opts = {
           -- this table is passed directly to the proxied completion source
           -- as the `option` field in nvim-cmp's source config
-
-          -- this is an option from cmp-digraphs
-          cache_digraphs_on_start = true,
-        }
-      }
-    }
-  }
-},
+          --
+          -- this is NOT the same as the opts in a plugin's lazy.nvim spec
+          opts = {
+            -- this is an option from cmp-digraphs
+            cache_digraphs_on_start = true,
+          },
+        },
+      },
+    },
+  },
+}
 ```
 
 ## Options
