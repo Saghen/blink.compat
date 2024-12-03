@@ -9,6 +9,8 @@ there might be differences between using the source on `nvim-cmp` and on
 `blink.cmp` through `blink.compat`, especially with regards to triggering
 (due to `blink.cmp`'s lack of keyword patterns).
 
+Developed by [@stefanboca](https://github.com/stefanboca)
+
 ## Note
 
 Don't use `nvim-cmp` buffer, snippets, path, or lsp completion sources with
