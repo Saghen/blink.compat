@@ -46,11 +46,8 @@ return {
       { 'dmitmel/cmp-digraphs' },
     },
     sources = {
-      completion = {
-        -- remember to enable your providers here
-        enabled_providers = { 'lsp', 'path', 'snippets', 'buffer', 'digraphs' },
-      },
-
+      -- remember to enable your providers here
+      defaults = { 'lsp', 'path', 'snippets', 'buffer', 'digraphs' },
       providers = {
         -- create provider
         digraphs = {
