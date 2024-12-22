@@ -84,7 +84,7 @@ function source:get_completions(ctx, callback)
       }
 
       items = vim.tbl_map(function(item)
-        if item.textEdit or item.textEditText then return item end
+        if type(item) ~= 'table' or item.textEdit or item.textEditText then return item end
 
         -- some sources reuse items, so copy to avoid setting textEdit on them
         item = utils.shallow_copy(item)
