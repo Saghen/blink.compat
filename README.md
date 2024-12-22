@@ -47,7 +47,7 @@ return {
     },
     sources = {
       -- remember to enable your providers here
-      defaults = { 'lsp', 'path', 'snippets', 'buffer', 'digraphs' },
+      default = { 'lsp', 'path', 'snippets', 'buffer', 'digraphs' },
       providers = {
         -- create provider
         digraphs = {
