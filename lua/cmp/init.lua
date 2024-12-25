@@ -14,6 +14,12 @@ cmp.event = cmp.core.event
 ---Expose setup
 cmp.setup = require('cmp.setup')
 
+cmp.get_config = function()
+  -- Workaround for plugins that use `cmp.get_config` to inject their
+  -- own cmp source (e.g. obsidian.nvim).
+  return { sources = require('blink.compat.registry').sources }
+end
+
 function cmp.register_source(name, s)
   require('blink.compat.registry').register_source(name, s)
   -- use name as id
