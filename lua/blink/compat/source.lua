@@ -13,7 +13,6 @@ function source.new(_, config)
 end
 
 function source:_get_source()
-  if self._source ~= nil then return self._source end
   self._source = registry.get_source(self.config.name)
   if self._source == nil and require('blink.compat.config').debug then
     vim.notify_once(
