@@ -14,6 +14,7 @@ cmp.event = cmp.core.event
 ---Expose setup
 cmp.setup = require('cmp.setup')
 
+cmp.config = require('cmp.config')
 cmp.get_config = function()
   -- Workaround for plugins that use `cmp.get_config` to inject their
   -- own cmp source (e.g. obsidian.nvim).

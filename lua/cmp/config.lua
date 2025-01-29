@@ -18,4 +18,6 @@ function config.get_source_config(name)
   return nil
 end
 
+function config.sources() return {} end
+
 return config
