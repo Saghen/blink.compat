@@ -51,7 +51,8 @@ return {
       providers = {
         -- create provider
         digraphs = {
-          name = 'digraphs', -- IMPORTANT: use the same name as you would for nvim-cmp
+          -- IMPORTANT: use the same name as you would for nvim-cmp
+          name = 'digraphs',
           module = 'blink.compat.source',
 
           -- all blink.cmp source config options work as normal:
@@ -64,6 +65,11 @@ return {
           opts = {
             -- this is an option from cmp-digraphs
             cache_digraphs_on_start = true,
+
+          -- If you'd like to use a `name` that does not exactly match nvim-cmp,
+          -- set `cmp_name` to the name you would use for nvim-cmp, for instance:
+          -- cmp_name = "digraphs"
+          -- then, you can set the source's `name` to whatever you like.
           },
         },
       },

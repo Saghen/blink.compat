@@ -8,16 +8,17 @@ local source = {}
 function source.new(_, config)
   local self = setmetatable({}, { __index = source })
   self.config = config
+  self.cmp_name = self.config.name or self.config.opts.cmp_name
 
   return self
 end
 
 function source:_get_source()
-  self._source = registry.get_source(self.config.name)
+  self._source = registry.get_source(self.cmp_name)
   if self._source == nil and require('blink.compat.config').debug then
     vim.notify_once(
       'blink.compat completion source "'
-        .. self.config.name
+        .. self.cmp_name
         .. '" has not registered itself.\n Please try enabling `impersonate_nvim_cmp` in blink.compat `opts`',
       vim.log.levels.WARN
     )
@@ -56,7 +57,7 @@ function source:get_completions(ctx, callback)
       triggerCharacter = ctx.trigger.character,
       triggerKind = ctx.trigger.kind,
     },
-    name = self.config.name,
+    name = self.source_name,
     option = self.config.opts or {},
     priority = 0,
     trigger_characters = {},
