@@ -8,7 +8,7 @@ local source = {}
 function source.new(_, config)
   local self = setmetatable({}, { __index = source })
   self.config = config
-  self.cmp_name = self.config.name or self.config.opts.cmp_name
+  self.cmp_name = (self.config.opts and self.config.opts.cmp_name) or self.config.name
 
   return self
 end
