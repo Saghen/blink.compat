@@ -1,5 +1,3 @@
-local pattern = require('blink.compat.lib.pattern')
-
 local BLINK2CMP_KIND = {
   manual = 'manual',
   prefetch = 'auto',
