@@ -1,5 +1,12 @@
 local pattern = require('blink.compat.lib.pattern')
 
+local BLINK2CMP_KIND = {
+  manual = 'manual',
+  prefetch = 'auto',
+  keyword = 'auto',
+  trigger_character = 'triggerOnly',
+}
+
 local context = {}
 
 function context.empty()
@@ -32,8 +39,7 @@ function context.new(ctx)
     -- NOTE: prev_context is just an empty context. AFAIK this is fine because nothing actually uses it.
     prev_context = context.empty(),
     option = {
-      -- NOTE: this is not quite accurate to nvim-cmp, but should be correct in most cases
-      reason = ctx.trigger.kind == vim.lsp.protocol.CompletionTriggerKind.Invoked and 'manual' or 'auto',
+      reason = BLINK2CMP_KIND[ctx.trigger.kind] or 'none',
     },
     cache = { entries = {} },
     filetype = vim.api.nvim_get_option_value('filetype', { buf = ctx.bufnr }),

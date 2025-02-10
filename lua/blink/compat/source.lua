@@ -3,6 +3,8 @@ local context = require('blink.compat.lib.context')
 local pattern = require('blink.compat.lib.pattern')
 local utils = require('blink.compat.lib.utils')
 
+local CompletionTriggerKind = vim.lsp.protocol.CompletionTriggerKind
+
 local source = {}
 
 function source.new(_, config)
@@ -55,7 +57,8 @@ function source:get_completions(ctx, callback)
     context = cmp_ctx,
     completion_context = {
       triggerCharacter = ctx.trigger.character,
-      triggerKind = ctx.trigger.kind,
+      triggerKind = ctx.trigger.kind == 'trigger_character' and CompletionTriggerKind.TriggerCharacter
+        or CompletionTriggerKind.Invoked,
     },
     name = self.source_name,
     option = self.config.opts or {},
