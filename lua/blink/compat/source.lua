@@ -77,6 +77,19 @@ function source:get_completions(ctx, callback)
 
     local items = candidates.items or candidates
 
+    items = vim.tbl_map(function(item)
+      -- some sources reuse items, so copy to avoid mutating them
+      item = utils.shallow_copy(item)
+
+      -- HACK: some sources return invalud documentation, with only one of kind or value set
+      -- remove documentation in those cases
+      if item.documentation and type(item.documentation) ~= 'string' then
+        if item.documentation.kind == nil or item.documentation.value == nil then item.documentation = nil end
+      end
+
+      return item
+    end, items)
+
     if keyword_start then
       local range = {
         start = { line = cmp_ctx.cursor.line, character = keyword_start - 1 },
@@ -85,9 +98,6 @@ function source:get_completions(ctx, callback)
 
       items = vim.tbl_map(function(item)
         if type(item) ~= 'table' or item.textEdit or item.textEditText then return item end
-
-        -- some sources reuse items, so copy to avoid setting textEdit on them
-        item = utils.shallow_copy(item)
 
         local word = item.insertText or item.label
 
