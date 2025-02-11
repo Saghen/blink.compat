@@ -73,12 +73,17 @@ function source:get_completions(ctx, callback)
   }
 
   local function transformed_callback(candidates)
-    if candidates == nil then
+    if candidates == nil or type(candidates) ~= 'table' then
       callback()
       return
     end
 
     local items = candidates.items or candidates
+
+    if #items == 0 then
+      callback()
+      return
+    end
 
     items = vim.tbl_map(function(item)
       -- some sources reuse items, so copy to avoid mutating them
