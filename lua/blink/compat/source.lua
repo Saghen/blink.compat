@@ -137,7 +137,9 @@ function source:resolve(item, callback)
   s:resolve(item, callback)
 end
 
-function source:execute(_, item, callback)
+function source:execute(_, item, callback, default_implementation)
+  if type(default_implementation) == 'function' then default_implementation() end
+
   local s = self:_get_source()
   if s == nil or s.execute == nil then return callback() end
 
