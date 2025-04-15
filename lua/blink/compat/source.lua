@@ -43,7 +43,7 @@ function source:get_completions(ctx, callback)
   if s == nil or s.complete == nil then return callback() end
 
   local keyword_pattern
-  if s.get_keyword_pattern then keyword_pattern = s:get_keyword_pattern() end
+  if s.get_keyword_pattern then keyword_pattern = s:get_keyword_pattern({ option = self.config.opts or {} }) end
 
   local cmp_ctx = context.new(ctx)
 
