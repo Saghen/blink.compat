@@ -4,12 +4,6 @@
 
 --- @type blink.compat.Config
 local config = {
-  -- some plugins lazily register their completion source when nvim-cmp is
-  -- loaded, so pretend that we are nvim-cmp, and that nvim-cmp is loaded.
-  -- most plugins don't do this, so this option should rarely be needed
-  -- NOTE: only has effect when using lazy.nvim plugin manager
-  impersonate_nvim_cmp = false,
-
   -- print some debug information. Might be useful for troubleshooting
   debug = false,
 }

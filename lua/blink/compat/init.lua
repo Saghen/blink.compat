@@ -1,23 +1,5 @@
 local compat = {}
 
-local function setup_impersonate()
-  if package.loaded.lazy then
-    local LazyConfig = require('lazy.core.config')
-
-    LazyConfig.plugins['nvim-cmp'] = LazyConfig.plugins['blink.compat']
-
-    vim.api.nvim_create_autocmd('User', {
-      group = compat.augroup,
-      pattern = 'LazyDone',
-      once = true,
-      callback = vim.schedule_wrap(function()
-        package.loaded['nvim-cmp'] = package.loaded['blink.compat']
-        vim.api.nvim_exec_autocmds('User', { pattern = 'LazyLoad', modeline = false, data = 'nvim-cmp' })
-      end),
-    })
-  end
-end
-
 local function setup_events()
   local compat_event = require('blink.compat.event')
   local registry = require('blink.compat.registry')
@@ -65,8 +47,6 @@ function compat.setup(opts)
   config.merge_with(opts)
 
   compat.augroup = vim.api.nvim_create_augroup('blink.compat', { clear = true })
-
-  if config.impersonate_nvim_cmp then setup_impersonate() end
 
   setup_events()
 end
